@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday...! 🎈</title>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Poppins:wght@300;400;600&display=swap"
+        rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'pink-pastel': '#ffd1dc',
+                        'pink-hot': '#ff69b4',
+                        'pink-deep': '#ff1493',
+                        'mark-green': '#4ade80',
+                    },
+                    fontFamily: {
+                        'cursive': ['"Dancing Script"', 'cursive'],
+                        'sans': ['Poppins', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body,
+        html {
+            overflow-x: hidden;
+            background: linear-gradient(135deg, #fff0f5 0%, #ffd1dc 100%);
+            scroll-behavior: smooth;
+            /* Custom Cute Pinky Cursor! ✨ */
+            cursor: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32'><text y='24' font-size='24'>✨</text></svg>") 16 16, auto;
+        }
+
+        /* Hover Custom Cursor for Clickable Items 💖 */
+        button,
+        .gift-box,
+        input[type=range] {
+            cursor: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32'><text y='24' font-size='24'>🥳</text></svg>") 16 16, pointer !important;
+        }
+
+        /* Initial Gift Box Screen */
+        #gift-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #ffb6c1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 1s ease, visibility 1s ease;
+        }
+
+        .gift-box {
+            font-size: 6rem;
+            cursor: pointer;
+            animation: bounce 2s infinite;
+            transition: transform 0.3s;
+        }
+
+        @media (min-width: 768px) {
+            .gift-box {
+                font-size: 8rem;
+            }
+        }
+
+        .gift-box:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        @keyframes bounce {
+
+            0%,
+            20%,
+            50%,
+            80%,
+            100% {
+                transform: translateY(0);
+            }
+
+            40% {
+                transform: translateY(-30px);
+            }
+
+            60% {
+                transform: translateY(-15px);
+            }
+        }
+
+        /* Floating Hearts Animation */
+        .heart {
+            position: fixed;
+            top: -10vh;
+            font-size: 1.5rem;
+            color: #ff69b4;
+            opacity: 0.6;
+            animation: fall linear infinite;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(110vh) rotate(360deg);
+            }
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #fff0f5;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #ff69b4;
+            border-radius: 5px;
+        }
+
+        /* Reveal Animation on Scroll */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* iOS Liquid Glass Effect */
+        .glass-liquid {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-right: 1px solid rgba(255, 255, 255, 0.2);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05), inset 0 0 15px rgba(255, 255, 255, 0.2);
+            border-radius: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-liquid::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.3) 50%, rgba(255, 255, 255, 0) 100%);
+            transform: skewX(-20deg);
+            animation: glassShine 6s infinite;
+        }
+
+        @keyframes glassShine {
+            0% {
+                left: -100%;
+            }
+
+            20% {
+                left: 200%;
+            }
+
+            100% {
+                left: 200%;
+            }
+        }
+
+        /* Music Player Glass Effect */
+        .glass-player {
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1), inset 0 0 15px rgba(255, 255, 255, 0.4);
+            border-radius: 3rem;
+        }
+
+        /* Custom Sliders for Player */
+        input[type=range] {
+            -webkit-appearance: none;
+            background: transparent;
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 14px;
+            width: 14px;
+            border-radius: 50%;
+            background: #ff1493;
+            cursor: pointer;
+            margin-top: -5px;
+            box-shadow: 0 0 5px rgba(255, 20, 147, 0.5);
+            transition: transform 0.1s;
+        }
+
+        input[type=range]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 4px;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 2px;
+        }
+
+        /* Mark Lee Dynamic Container (Responsive Sizes) */
+        #mark-container {
+            position: fixed;
+            z-index: 5;
+            pointer-events: none;
+            transition: transform 0.1s ease-out;
+            width: 150px;
+            height: 220px;
+            top: 10%;
+            left: 10px;
+        }
+
+        @media (min-width: 768px) {
+            #mark-container {
+                width: 250px;
+                height: 350px;
+                top: 15%;
+                left: 20px;
+            }
+        }
+
+        /* 🐾 SMART Peeking Kittens Animations 🐾 */
+        .peeking-cat {
+            position: absolute;
+            height: auto;
+            z-index: 10;
+            pointer-events: none;
+            opacity: 0;
+            /* Using CSS variables for intelligent flipping and rotating injected by JS! */
+            --rot: 0deg;
+            --flip: 1;
+        }
+
+        .cat-bottom {
+            bottom: 0;
+            animation: peek-bottom 3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        .cat-top {
+            top: 0;
+            animation: peek-top 3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        .cat-left {
+            left: 0;
+            animation: peek-left 3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        .cat-right {
+            right: 0;
+            animation: peek-right 3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes peek-bottom {
+            0% {
+                transform: translateY(100%) scaleX(var(--flip)) rotate(var(--rot));
+                opacity: 0;
+            }
+
+            15% {
+                transform: translateY(0) scaleX(var(--flip)) rotate(var(--rot));
+                opacity: 1;
+            }
+
+            85% {
+                transform: translateY(0) scaleX(var(--flip)) rotate(var(--rot));
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(100%) scaleX(var(--flip)) rotate(var(--rot));
+                opacity: 0;
+            }
+        }
+
+        @keyframes peek-top {
+            0% {
+                transform: translateY(-100%) scaleX(var(--flip)) rotate(var(--rot));
+                opacity: 0;
+            }
+
+            15% {
+                transform: translateY(0) scaleX(var(--flip)) rotate(var(--rot));
+                opacity: 1;
+            }
+
+            85% {
+                transform: translateY(0) scaleX(var(--flip)) rotate(var(--rot));
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-100%) scaleX(var(--flip)) rotate(var(--rot));
+                opacity: 0;
+            }
+        }
+
+        @keyframes peek-left {
+            0% {
+                transform: translateX(-100%) scaleX(var(--flip)) rotate(var(--rot));
+                opacity: 0;
+            }
+
+            15% {
+                transform: translateX(0) scaleX(var(--flip)) rotate(var(--rot));
+                opacity: 1;
+            }
+
+            85% {
+                transform: translateX(0) scaleX(var(--flip)) rotate(var(--rot));
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateX(-100%) scaleX(var(--flip)) rotate(var(--rot));
+                opacity: 0;
+            }
+        }
+
+        @keyframes peek-right {
+            0% {
+                transform: translateX(100%) scaleX(var(--flip)) rotate(var(--rot));
+                opacity: 0;
+            }
+
+            15% {
+                transform: translateX(0) scaleX(var(--flip)) rotate(var(--rot));
+                opacity: 1;
+            }
+
+            85% {
+                transform: translateX(0) scaleX(var(--flip)) rotate(var(--rot));
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateX(100%) scaleX(var(--flip)) rotate(var(--rot));
+                opacity: 0;
+            }
+        }
+
+        @keyframes softPartyGlow {
+
+            0%,
+            100% {
+                color: #eb486e;
+                text-shadow:
+                    0 0 12px rgba(255, 0, 17, 0.35),
+                    0 0 12px rgba(251, 77, 164, 0.25);
+            }
+
+            50% {
+                color: #47d9cf;
+                text-shadow:
+                    0 0 12px rgba(4, 234, 222, 0.304),
+                    0 0 12px rgba(4, 191, 234, 0.2);
+            }
+        }
+
+        .soft-party-glow {
+            animation: softPartyGlow 4.5s ease-in-out infinite;
+        }
+    </style>
+</head>
+
+<body class="font-sans antialiased text-gray-800 relative min-h-screen flex flex-col">
+    <main class="flex-1 relative z-10">
+
+        <audio id="bg-music" loop>
+            <source src="MARK_Raincouver.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+
+        <div id="gift-screen">
+            <h1 class="font-cursive text-4xl md:text-6xl text-white mb-8 text-center drop-shadow-md px-4 leading-tight">
+                Here's a special gift for you...
+            </h1>
+            <div class="gift-box" onclick="openGift()">🎁</div>
+            <p class="text-white mt-6 font-cursive tracking-widest uppercase text-xs md:text-sm animate-pulse">
+                🎉...Press It...🎉</p>
+        </div>
+
+        <div id="hearts-container"></div>
+
+        <div id="mark-container" class="hidden">
+            <div class="absolute inset-0 bg-pink-300 rounded-full blur-2xl md:blur-3xl opacity-50 animate-pulse"></div>
+            <div id="aura-ring"
+                class="absolute inset-[-10px] md:inset-[-20px] border-2 border-pink-400 border-dashed rounded-[30px] md:rounded-[40px] opacity-70">
+            </div>
+            <div
+                class="absolute inset-[-20px] md:inset-[-40px] border border-white rounded-[40px] md:rounded-[50px] animate-[spin_15s_linear_infinite_reverse] opacity-50">
+            </div>
+
+            <i class="fas fa-star absolute top-0 left-0 text-yellow-300 animate-ping opacity-75 text-lg md:text-xl"></i>
+            <i
+                class="fas fa-sparkles absolute bottom-5 md:bottom-10 right-0 text-white animate-pulse text-xl md:text-2xl"></i>
+
+            <img id="mark-img-1" src="1.png" alt="Mark Lee 1"
+                class="absolute inset-0 w-full h-full object-contain mix-blend-multiply transition-opacity duration-700 opacity-100 filter contrast-125 saturate-150">
+            <img id="mark-img-2" src="2.png" alt="Mark Lee 2"
+                class="absolute inset-0 w-full h-full object-contain mix-blend-multiply transition-opacity duration-700 opacity-0 filter contrast-125 saturate-150">
+            <img id="mark-img-3" src="3.png" alt="Mark Lee 3"
+                class="absolute inset-0 w-full h-full object-contain mix-blend-multiply transition-opacity duration-700 opacity-0 filter contrast-125 saturate-150">
+        </div>
+
+        <main id="main-content" class="hidden relative z-10 w-full min-h-screen pb-10">
+
+            <header class="min-h-screen flex flex-col justify-center items-center text-center px-4 pt-10 relative z-20">
+                <div id="card-hero" class="glass-liquid p-6 py-10 md:p-16 max-w-3xl reveal mx-2">
+                    <h2
+                        class="text-xl md:text-3xl font-bold mb-2 uppercase tracking-widest soft-party-glow drop-shadow-sm">
+                        Happy 24<sup class="text-sm align-super">th</sup> Birthday!
+                    </h2>
+                    <h1
+                        class="font-cursive text-5xl md:text-8xl text-pink-deep mb-4 md:mb-6 drop-shadow-lg bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-pink-deep leading-tight">
+                        Crazy Girl<br>Meita!
+                    </h1>
+                    <p class="text-base md:text-2xl text-gray-800 leading-relaxed max-w-xl mx-auto font-medium">
+                        Today is all about you! Wishing you a day filled with love, laughter, endless pink aesthetics,
+                        and all your favorite things in the world. 🌸✨
+                    </p>
+                    <button onclick="throwConfetti()"
+                        class="mt-8 md:mt-10 glass-liquid bg-white/30 hover:bg-white/50 text-pink-deep font-bold py-3 px-8 md:py-4 md:px-10 rounded-full shadow-xl transition-all transform hover:scale-110 border border-white text-sm md:text-base">
+                        🎉
+                    </button>
+                </div>
+            </header>
+
+            <section class="max-w-3xl mx-auto px-4 py-20 md:py-32 reveal text-center relative z-20">
+                <div id="card-note" class="glass-liquid p-6 py-10 md:p-14 mx-2">
+                    <h2 class="font-cursive text-4xl md:text-5xl text-pink-deep mb-6 md:mb-8 drop-shadow-sm">A Little
+                        Note For You 💌</h2>
+                    <p class="text-gray-800 leading-loose text-base md:text-xl font-medium">
+                        HBD stupid Mei...😭 I hope your day is as sweet and beautiful as you are. May this year bring
+                        you closer to all your
+                        dreams, lots of amazing moments, endless happiness, and everything your heart desires. And also
+                        i wanna say, "Trust
+                        the process..." you are the Good Girl. noo need to be like others ya. you'll get the best output
+                        at
+                        the end. The best female human, the best female friend, best at everything... yee let's
+                        celebrate my grandma's birthday. i mean the 18th Birthday 😭. wow you're an adult now... uuu
+                        WKWKWKK. stupid Mei :p <br> Stay Safe! & Stay Happy.<br>A heartfelt little love note to someone
+                        who
+                        feels like my own sister — not by blood, but forever my sister, the sister I never had 💖
+                        <br><br>
+                        <span class="text-2xl md:text-3xl font-cursive text-pink-hot block mt-4 md:mt-6">Happy Birthday!
+                            Stay awesome! 💖</span>
+                    </p>
+                </div>
+            </section>
+
+            <section id="music-player"
+                class="max-w-md mx-auto w-[90%] glass-player p-6 md:p-8 flex flex-col items-center justify-center gap-5 z-20 transition-opacity duration-1000 opacity-0 hidden relative mb-16 shadow-2xl border border-white/80">
+                <div class="title-wrapper" id="titleWrapper">
+                    <h3 class="music-title" id="musicTitle">
+                        MARK (NCT) 'Raincouver' (마크 Raincouver 가사)
+                    </h3>
+                </div>
+
+                <style>
+                    .title-wrapper {
+                        width: 100%;
+                        overflow: hidden;
+                        position: relative;
+                        cursor: default;
+                    }
+
+                    .music-title {
+                        display: inline-block;
+                        white-space: nowrap;
+                        font-size: 1.5rem;
+                        font-weight: 700;
+                        color: #be185d;
+                        transform: translateX(0);
+                        transition: transform 6s linear;
+                    }
+                </style>
+
+                <script>
+                    const wrapper = document.getElementById("titleWrapper");
+                    const title = document.getElementById("musicTitle");
+                    let isAnimating = false;
+
+                    async function runScrollAnimation() {
+                        if (isAnimating) return;
+                        isAnimating = true;
+                        const overflowAmount = title.scrollWidth - wrapper.clientWidth;
+                        if (overflowAmount <= 0) { isAnimating = false; return; }
+                        title.style.transition = "transform 6s linear";
+                        title.style.transform = `translateX(-${overflowAmount}px)`;
+                        await wait(6500);
+                        await wait(1000);
+                        title.style.transition = "transform 4s ease-in-out";
+                        title.style.transform = "translateX(0)";
+                        await wait(4500);
+                        isAnimating = false;
+                    }
+
+                    function wait(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
+                    window.addEventListener("load", () => { setTimeout(runScrollAnimation, 800); });
+                    wrapper.addEventListener("mouseenter", () => { runScrollAnimation(); });
+                </script>
+
+                <p class="text-gray-600 font-medium text-sm flex justify-center items-center gap-3">
+                    MARK • The Firstfruit - The 1st Album
+                    <i class="fas fa-compact-disc music-disc"></i>
+                </p>
+
+                <style>
+                    .music-disc {
+                        font-size: 1rem;
+                        color: #ff1493;
+                        animation: smoothSpin 3s linear infinite;
+                        filter: drop-shadow(0 0 4px rgba(255, 20, 147, 0.8)) drop-shadow(0 0 10px rgba(255, 105, 180, 0.5));
+                        transform-origin: center;
+                    }
+
+                    @keyframes smoothSpin {
+                        from {
+                            transform: rotate(0deg);
+                        }
+
+                        to {
+                            transform: rotate(360deg);
+                        }
+                    }
+                </style>
+
+                <div class="w-full flex items-center gap-3">
+                    <span id="current-time" class="text-xs text-gray-600 font-bold w-10 text-right">0:34</span>
+                    <input type="range" id="progress-bar" value="0" min="0" max="100" class="flex-1">
+                    <span id="total-time" class="text-xs text-gray-600 font-bold w-10 text-left">0:00</span>
+                </div>
+
+                <div class="flex items-center justify-center gap-8 w-full mt-2">
+                    <button id="stop-btn"
+                        class="w-10 h-10 flex items-center justify-center rounded-full text-pink-deep/80 hover:text-pink-deep hover:bg-white/50 transition-all shadow-sm">
+                        <i class="fas fa-stop text-sm"></i>
+                    </button>
+                    <button id="play-pause-btn"
+                        class="w-14 h-14 flex items-center justify-center rounded-full bg-white/60 hover:bg-white/90 text-pink-deep transition-all shadow-md text-xl">
+                        <i class="fas fa-pause"></i>
+                    </button>
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-volume-up text-pink-deep/80 text-sm"></i>
+                        <input type="range" id="volume-bar" min="0" max="1" step="0.01" value="0.7" class="w-16">
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer
+            class="w-full text-center pb-8 pt-10 text-pink-deep/70 font-cursive text-xl md:text-2xl font-bold px-4 border-t border-white/10 bg-white/5 backdrop-blur-md">
+            Made with lots of love and pink! 🌸
+        </footer>
+    </main>
+
+    <script>
+        // --- 🐾 INTELLIGENT Peeking Kittens Logic 🐾 ---
+        function spawnRandomKitten() {
+            // STRICTLY target only the two main text cards so it ignores buttons!
+            const cards = [document.getElementById('card-hero'), document.getElementById('card-note')];
+            if (!cards[0] || !cards[1]) return;
+
+            const randomCard = cards[Math.floor(Math.random() * cards.length)];
+
+            // Cat Definitions & Intelligence Rules
+            const kittens = [
+                {
+                    src: 'kitten1.png',
+                    width: '85px',
+                    allowedEdges: ['cat-bottom'],
+                    getStyle: () => ({ rot: '0deg', flip: 1 }) // Always standard upward
+                },
+                {
+                    src: 'tongue-out-kitten.png',
+                    width: '70px',
+                    allowedEdges: ['cat-bottom', 'cat-top', 'cat-left', 'cat-right'],
+                    getStyle: (edge) => {
+                        // Rotates perfectly depending on which wall it touches!
+                        const styles = {
+                            'cat-bottom': { rot: '0deg', flip: 1 },
+                            'cat-top': { rot: '180deg', flip: 1 },
+                            'cat-left': { rot: '90deg', flip: 1 },
+                            'cat-right': { rot: '-90deg', flip: 1 }
+                        };
+                        return styles[edge];
+                    }
+                },
+                {
+                    src: 'kitten3.png',
+                    width: '80px',
+                    allowedEdges: ['cat-left', 'cat-right'], // Side Cat ONLY peeks from sides!
+                    getStyle: (edge) => {
+                        // Assuming your kitten3 image has the flat border on the LEFT naturally.
+                        // If it spawns on the right, it flips automatically! 
+                        // (If it looks backwards, swap the 1 and -1 below)
+                        if (edge === 'cat-left') return { rot: '0deg', flip: 1 };
+                        if (edge === 'cat-right') return { rot: '0deg', flip: -1 };
+                    }
+                }
+            ];
+
+            const chosenCat = kittens[Math.floor(Math.random() * kittens.length)];
+            const randomEdge = chosenCat.allowedEdges[Math.floor(Math.random() * chosenCat.allowedEdges.length)];
+            const { rot, flip } = chosenCat.getStyle(randomEdge);
+
+            const cat = document.createElement('img');
+            cat.src = chosenCat.src;
+            cat.className = `peeking-cat ${randomEdge}`;
+            cat.style.width = chosenCat.width;
+
+            // Injecting CSS logic directly to the image
+            cat.style.setProperty('--rot', rot);
+            cat.style.setProperty('--flip', flip);
+
+            // Keeps cats between 20% and 80% so they avoid glitching on rounded corners
+            if (randomEdge === 'cat-bottom' || randomEdge === 'cat-top') {
+                cat.style.left = Math.floor(Math.random() * 60 + 20) + '%';
+            } else {
+                cat.style.top = Math.floor(Math.random() * 60 + 20) + '%';
+            }
+
+            randomCard.appendChild(cat);
+
+            // Despawn cat after animation
+            setTimeout(() => {
+                if (cat.parentNode) {
+                    cat.parentNode.removeChild(cat);
+                }
+            }, 3000);
+        }
+
+        function startKittenLoop() {
+            const randomDelay = Math.random() * 3000 + 3000;
+            setTimeout(() => {
+                spawnRandomKitten();
+                startKittenLoop();
+            }, randomDelay);
+        }
+
+        // --- Audio Logic ---
+        const audio = document.getElementById('bg-music');
+        const playPauseBtn = document.getElementById('play-pause-btn');
+        const stopBtn = document.getElementById('stop-btn');
+        const progressBar = document.getElementById('progress-bar');
+        const volumeBar = document.getElementById('volume-bar');
+        const musicPlayer = document.getElementById('music-player');
+        const currentTimeEl = document.getElementById('current-time');
+        const totalTimeEl = document.getElementById('total-time');
+
+        let isPlaying = false;
+        let targetVolume = 0.7;
+
+        function formatTime(time) {
+            if (isNaN(time)) return "0:00";
+            const minutes = Math.floor(time / 60);
+            const seconds = Math.floor(time % 60);
+            return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        }
+
+        // Gift Opening Logic
+        function openGift() {
+            const giftScreen = document.getElementById('gift-screen');
+            const mainContent = document.getElementById('main-content');
+            const markContainer = document.getElementById('mark-container');
+
+            giftScreen.style.opacity = '0';
+
+            setTimeout(() => {
+                giftScreen.style.display = 'none';
+                mainContent.classList.remove('hidden');
+                markContainer.classList.remove('hidden');
+
+                musicPlayer.classList.remove('hidden');
+                setTimeout(() => musicPlayer.style.opacity = '1', 100);
+
+                audio.currentTime = 103;
+                audio.volume = 0;
+
+                let playPromise = audio.play();
+                if (playPromise !== undefined) {
+                    playPromise.then(_ => {
+                        isPlaying = true;
+                        let fadeAudio = setInterval(() => {
+                            if (audio.volume < targetVolume) {
+                                audio.volume = Math.min(targetVolume, audio.volume + 0.05);
+                            } else {
+                                clearInterval(fadeAudio);
+                            }
+                        }, 200);
+                    }).catch(error => {
+                        console.log("Auto-play prevented by browser. User needs to press play.");
+                        playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+                        isPlaying = false;
+                    });
+                }
+
+                throwConfetti(true);
+                reveal();
+                startKittenLoop(); // 🐾 Starts the kittens!
+            }, 1000);
+        }
+
+        playPauseBtn.addEventListener('click', () => {
+            if (isPlaying) {
+                audio.pause();
+                playPauseBtn.innerHTML = '<i class="fas fa-play ml-1"></i>';
+            } else {
+                audio.play();
+                playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+            }
+            isPlaying = !isPlaying;
+        });
+
+        stopBtn.addEventListener('click', () => {
+            audio.pause();
+            audio.currentTime = 0;
+            isPlaying = false;
+            playPauseBtn.innerHTML = '<i class="fas fa-play ml-1"></i>';
+        });
+
+        audio.addEventListener('timeupdate', () => {
+            if (audio.duration) {
+                const progressPercent = (audio.currentTime / audio.duration) * 100;
+                progressBar.value = progressPercent;
+                currentTimeEl.textContent = formatTime(audio.currentTime);
+                totalTimeEl.textContent = formatTime(audio.duration);
+            }
+        });
+
+        progressBar.addEventListener('input', (e) => {
+            const seekTime = (e.target.value / 100) * audio.duration;
+            audio.currentTime = seekTime;
+        });
+
+        volumeBar.addEventListener('input', (e) => {
+            audio.volume = e.target.value;
+            targetVolume = e.target.value;
+        });
+
+        // --- Visual Effects Logic ---
+        function throwConfetti(isMassive = false) {
+            const duration = isMassive ? 3000 : 1000;
+            const end = Date.now() + duration;
+            const isMobile = window.innerWidth < 768;
+
+            (function frame() {
+                confetti({
+                    particleCount: isMassive ? (isMobile ? 3 : 5) : 2,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0 },
+                    colors: ['#ffc0cb', '#ff69b4', '#ff1493', '#ffffff', '#4ade80']
+                });
+                confetti({
+                    particleCount: isMassive ? (isMobile ? 3 : 5) : 2,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1 },
+                    colors: ['#ffc0cb', '#ff69b4', '#ff1493', '#ffffff', '#4ade80']
+                });
+
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                }
+            }());
+        }
+
+        function createHearts() {
+            const container = document.getElementById('hearts-container');
+            const heartsCount = window.innerWidth < 768 ? 10 : 20;
+            const floatingIcons = ['💖', '🎉', '🎁', '🌸', '😻'];
+
+            for (let i = 0; i < heartsCount; i++) {
+                let heart = document.createElement('div');
+                heart.innerHTML = floatingIcons[Math.floor(Math.random() * floatingIcons.length)];
+                heart.classList.add('heart');
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.fontSize = (Math.random() * 15 + 10) + 'px';
+                heart.style.animationDuration = (Math.random() * 5 + 6) + 's';
+                heart.style.animationDelay = (Math.random() * 5) + 's';
+                container.appendChild(heart);
+            }
+        }
+        createHearts();
+
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 50;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+        window.addEventListener("scroll", reveal);
+
+        window.addEventListener('scroll', function () {
+            const markContainer = document.getElementById('mark-container');
+            if (!markContainer || markContainer.classList.contains('hidden')) return;
+
+            const img1 = document.getElementById('mark-img-1');
+            const img2 = document.getElementById('mark-img-2');
+            const img3 = document.getElementById('mark-img-3');
+            const auraRing = document.getElementById('aura-ring');
+
+            const scrollTop = window.scrollY;
+            const docHeight = document.body.scrollHeight - window.innerHeight;
+            const scrollPercent = docHeight > 0 ? Math.max(0, Math.min(1, scrollTop / docHeight)) : 0;
+
+            const viewportWidth = window.innerWidth;
+            const containerWidth = markContainer.offsetWidth;
+
+            const edgeOffset = window.innerWidth < 768 ? -20 : -50;
+            const maxTranslateX = viewportWidth - containerWidth - edgeOffset;
+
+            let translateX = 0;
+            const verticalTravel = window.innerWidth < 768 ? 0.2 : 0.4;
+            let translateY = scrollPercent * (window.innerHeight * verticalTravel);
+
+            if (scrollPercent < 0.5) {
+                let p = scrollPercent / 0.5;
+                translateX = p * maxTranslateX;
+            } else {
+                let p = (scrollPercent - 0.5) / 0.5;
+                translateX = maxTranslateX - (p * maxTranslateX);
+            }
+
+            markContainer.style.transform = `translate(${translateX}px, ${translateY}px)`;
+            auraRing.style.transform = `rotate(${scrollPercent * 720}deg)`;
+
+            if (scrollPercent < 0.33) {
+                img1.style.opacity = '1'; img2.style.opacity = '0'; img3.style.opacity = '0';
+            } else if (scrollPercent < 0.66) {
+                img1.style.opacity = '0'; img2.style.opacity = '1'; img3.style.opacity = '0';
+            } else {
+                img1.style.opacity = '0'; img2.style.opacity = '0'; img3.style.opacity = '1';
+            }
+        });
+
+        window.addEventListener('resize', function () {
+            document.getElementById('hearts-container').innerHTML = '';
+            createHearts();
+        });
+    </script>
+</body>
+
+</html>
